@@ -1,0 +1,56 @@
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Princevrse — .gitignore
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# ── Dependencies ──────────────────────────────────────────
+node_modules/
+
+# ── Build outputs ─────────────────────────────────────────
+dist/
+build/
+out/
+.next/
+.next/cache/
+
+# ── Environment secrets ──────────────────────────────────
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ── Logs ──────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ── Cache & temp ──────────────────────────────────────────
+.cache/
+.vercel/
+*.tsbuildinfo
+.turbo/
+.eslintcache
+.stylelintcache
+
+# ── Test artifacts ────────────────────────────────────────
+coverage/
+
+# ── OS junk ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+
+# ── Editors ───────────────────────────────────────────────
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ── Vite ──────────────────────────────────────────────────
+vite.svg

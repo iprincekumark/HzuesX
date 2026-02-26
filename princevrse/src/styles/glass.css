@@ -1,0 +1,51 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Glass — Reusable glassmorphism utilities
+   
+   In DARK mode:  translucent dark glass over Aurora
+   In LIGHT mode: subtle frosted white glass
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* ── Dark-mode glass (default) ────────────────────────────────── */
+.glass {
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
+}
+
+/* ── Light-mode override ──────────────────────────────────────── */
+:where(:root:not(.dark)) .glass {
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06),
+        inset 0 0 0 0.5px rgba(255, 255, 255, 0.5);
+}
+
+/* ── Responsive blur adjustment ───────────────────────────────── */
+@media (max-width: 768px) {
+    .glass {
+        backdrop-filter: blur(10px) saturate(1.2);
+        -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    }
+}
+
+/* ── Glass hover state (for cards) ────────────────────────────── */
+.glass-hover {
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-hover:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+:where(:root:not(.dark)) .glass-hover:hover {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@import "./styles/glass.css";
+@import "./styles/split-clock.css";
+
+/* ── Tailwind v4: use class-based dark mode (not prefers-color-scheme) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Custom Theme ──────────────────────────────────────────────── */
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --color-primary: #6366f1;
+  --color-primary-light: #818cf8;
+  --color-accent: #a78bfa;
+}
+
+/* ── Base Styles ───────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-gray-900 dark:bg-transparent dark:text-gray-100 font-sans antialiased;
+    margin: 0;
+    min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
