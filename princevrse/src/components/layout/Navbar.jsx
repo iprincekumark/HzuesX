@@ -7,7 +7,6 @@ const NAV_ITEMS = [
     { label: "Skills", href: "#skills" },
     { label: "Projects", href: "#projects" },
     { label: "Contact", href: "#contact" },
-    { label: "Resume", href: "#resume" },
 ];
 
 /* ─── Theme Helper ────────────────────────────────────────────── */

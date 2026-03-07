@@ -53,8 +53,8 @@ export default function ScrollReveal({
             ease: "power3.out",
             scrollTrigger: {
                 trigger: el,
-                start: "top 85%",
-                end: "top 50%",
+                start: "top 95%",
+                end: "top 60%",
                 toggleActions: "play none none reverse",
             },
         });

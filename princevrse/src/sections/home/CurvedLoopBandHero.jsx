@@ -11,11 +11,11 @@ export default function CurvedLoopBandHero() {
             id="home"
             aria-label="Prince Turns Problems Into Products"
             className="
-        min-h-[110vh] w-full
+        min-h-[55vh] sm:min-h-[75vh] lg:min-h-[110vh] w-full
         flex items-start justify-start
         transition-colors duration-300
         overflow-hidden
-        pt-[12vh]
+        pt-[6vh] sm:pt-[10vh] lg:pt-[12vh]
       "
         >
             <HeroIntro />

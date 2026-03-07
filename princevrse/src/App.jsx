@@ -1,6 +1,9 @@
 import Navbar from "./components/layout/Navbar";
 import TechLogoLoop from "./components/sections/TechLogoLoop";
 import AboutSection from "./components/sections/AboutSection";
+import ContactSection from "./components/sections/ContactSection";
+import ProjectsSection from "./components/sections/ProjectsSection";
+import Footer from "./components/layout/Footer";
 import CurvedLoopBandHero from "./sections/home/CurvedLoopBandHero";
 import GlassSection from "./components/layout/GlassSection";
 import ShuffleHeading from "./components/ui/ShuffleHeading";
@@ -102,22 +105,15 @@ function App() {
             <TechLogoLoop embedded />
           </GlassSection>
 
-          <Section
-            id="projects"
-            title="Projects"
-            description="Explore my work — from side projects to production apps."
-          />
-          <Section
-            id="contact"
-            title="Contact"
-            description="Let's connect! Reach out for collaborations or just to say hi."
-          />
-          <Section
-            id="resume"
-            title="Resume"
-            description="View my professional experience and qualifications."
-          />
+          <GlassSection id="projects">
+            <ProjectsSection embedded />
+          </GlassSection>
+          <GlassSection id="contact">
+            <ContactSection embedded />
+          </GlassSection>
         </main>
+
+        <Footer />
       </div>
     </>
   );

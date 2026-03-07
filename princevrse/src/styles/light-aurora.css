@@ -1,0 +1,101 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Light Aurora — Aceternity-style CSS animated background
+   Only visible in light mode (hidden via .dark parent)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+@keyframes light-aurora {
+    0% {
+        background-position: 0% 50%;
+        transform: rotate(0deg) scale(1);
+    }
+
+    25% {
+        background-position: 50% 100%;
+        transform: rotate(3deg) scale(1.05);
+    }
+
+    50% {
+        background-position: 100% 50%;
+        transform: rotate(-2deg) scale(1);
+    }
+
+    75% {
+        background-position: 50% 0%;
+        transform: rotate(4deg) scale(1.03);
+    }
+
+    100% {
+        background-position: 0% 50%;
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+@keyframes light-aurora-2 {
+    0% {
+        background-position: 100% 0%;
+        transform: rotate(0deg) scale(1.05);
+    }
+
+    33% {
+        background-position: 0% 100%;
+        transform: rotate(-4deg) scale(1);
+    }
+
+    66% {
+        background-position: 50% 50%;
+        transform: rotate(3deg) scale(1.08);
+    }
+
+    100% {
+        background-position: 100% 0%;
+        transform: rotate(0deg) scale(1.05);
+    }
+}
+
+/* ── Container ────────────────────────────────────────────────────── */
+.light-aurora-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    overflow: hidden;
+    background: white;
+}
+
+/* ── Gradient blobs ───────────────────────────────────────────────── */
+.light-aurora-bg::before,
+.light-aurora-bg::after {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    border-radius: 50%;
+    opacity: 0.3;
+    filter: blur(80px);
+    will-change: transform, background-position;
+}
+
+.light-aurora-bg::before {
+    background: linear-gradient(135deg,
+            rgba(147, 130, 255, 0.4),
+            rgba(99, 179, 237, 0.3),
+            rgba(237, 137, 250, 0.35),
+            rgba(129, 230, 217, 0.3),
+            rgba(147, 130, 255, 0.4));
+    background-size: 300% 300%;
+    animation: light-aurora 12s ease-in-out infinite;
+}
+
+.light-aurora-bg::after {
+    background: linear-gradient(225deg,
+            rgba(245, 158, 193, 0.3),
+            rgba(99, 179, 237, 0.25),
+            rgba(167, 139, 250, 0.3),
+            rgba(252, 211, 77, 0.2),
+            rgba(245, 158, 193, 0.3));
+    background-size: 300% 300%;
+    animation: light-aurora-2 10s ease-in-out infinite;
+}
+
+/* ── Hide in dark mode ────────────────────────────────────────────── */
+:where(.dark) .light-aurora-bg {
+    display: none;
+}
