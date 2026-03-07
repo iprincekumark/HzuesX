@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from "react";
 import ScrollReveal from "../ui/ScrollReveal";
 
 /* ── Project showcase images (scroll-cycled) ─────────────────── */
-import rchHero from "../../assets/RCH.png";
-import rchFeatures from "../../assets/RCH-01.png";
-import rchAbout from "../../assets/RCH-02.png";
-import rchStory from "../../assets/RCH-03.png";
+import rchHero from "../../assets/RCH.webp";
+import rchFeatures from "../../assets/RCH-01.webp";
+import rchAbout from "../../assets/RCH-02.webp";
+import rchStory from "../../assets/RCH-03.webp";
 
 const SHOWCASE_IMAGES = [rchHero, rchFeatures, rchAbout, rchStory];
 
@@ -127,6 +127,9 @@ export default function ProjectsSection({ embedded = false }) {
                                     src={SHOWCASE_IMAGES[imageIndex]}
                                     alt={`Residential Community Hub — Screenshot ${imageIndex + 1}`}
                                     className="transition-opacity duration-150"
+                                    loading="lazy"
+                                    width="512"
+                                    height="320"
                                 />
                             </div>
                         </div>

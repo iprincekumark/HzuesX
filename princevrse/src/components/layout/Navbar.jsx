@@ -9,14 +9,15 @@ const NAV_ITEMS = [
     { label: "Contact", href: "#contact" },
 ];
 
-/* ─── Theme Helper ────────────────────────────────────────────── */
+/* ─── Theme Helper (time-based default) ───────────────────────── */
 const getInitialTheme = () => {
     if (typeof window === "undefined") return "dark";
+    /* Respect manual toggle if user already chose */
     const stored = localStorage.getItem("princevrse-theme");
     if (stored) return stored;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
+    /* Default by time: 6 AM – 6 PM → light, rest → dark */
+    const hour = new Date().getHours();
+    return hour >= 6 && hour < 18 ? "light" : "dark";
 };
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

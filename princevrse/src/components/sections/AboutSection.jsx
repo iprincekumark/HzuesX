@@ -2,23 +2,23 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import ScrollReveal from "../ui/ScrollReveal";
 
 /* ── All profile photos (scroll-cycled) ──────────────────────────── */
-import photo01 from "../../assets/Photo-01.jpg";
-import photo02 from "../../assets/Photo-02.jpg";
-import photo03 from "../../assets/Photo-03.jpg";
-import photo04 from "../../assets/Photo-04.jpg";
-import photo05 from "../../assets/Photo-05.jpg";
-import photo06 from "../../assets/Photo-06.jpg";
-import photo07 from "../../assets/Photo-07.jpg";
-import photo08 from "../../assets/Photo-08.jpg";
-import photo09 from "../../assets/Photo-09.jpg";
-import photo10 from "../../assets/Photo-10.jpg";
-import photo11 from "../../assets/Photo-11.jpg";
-import photo12 from "../../assets/Photo-12.jpg";
-import photo13 from "../../assets/Photo-13.jpeg";
-import photo14 from "../../assets/Photo-14.jpeg";
-import photo15 from "../../assets/Photo-15.jpeg";
-import photo16 from "../../assets/Photo-16.jpg";
-import photo17 from "../../assets/Photo-17.jpg";
+import photo01 from "../../assets/Photo-01.webp";
+import photo02 from "../../assets/Photo-02.webp";
+import photo03 from "../../assets/Photo-03.webp";
+import photo04 from "../../assets/Photo-04.webp";
+import photo05 from "../../assets/Photo-05.webp";
+import photo06 from "../../assets/Photo-06.webp";
+import photo07 from "../../assets/Photo-07.webp";
+import photo08 from "../../assets/Photo-08.webp";
+import photo09 from "../../assets/Photo-09.webp";
+import photo10 from "../../assets/Photo-10.webp";
+import photo11 from "../../assets/Photo-11.webp";
+import photo12 from "../../assets/Photo-12.webp";
+import photo13 from "../../assets/Photo-13.webp";
+import photo14 from "../../assets/Photo-14.webp";
+import photo15 from "../../assets/Photo-15.webp";
+import photo16 from "../../assets/Photo-16.webp";
+import photo17 from "../../assets/Photo-17.webp";
 
 const PHOTOS = [
     photo01, photo02, photo03, photo04, photo05,
@@ -201,6 +201,8 @@ export default function AboutSection({ embedded = false }) {
                                     alt={`Prince Kanoujiya — Photo ${photoIndex + 1}`}
                                     className="w-full h-full object-cover object-top transition-opacity duration-150"
                                     loading="lazy"
+                                    width="400"
+                                    height="500"
                                 />
                                 {/* Subtle gradient overlay */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />

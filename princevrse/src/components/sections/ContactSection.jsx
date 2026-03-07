@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ScrollReveal from "../ui/ScrollReveal";
-import worldmapImg from "../../assets/worldmap.png";
+import worldmapImg from "../../assets/worldmap.webp";
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    ContactSection — Matching the reference design exactly
@@ -20,9 +20,11 @@ function WorldMap() {
             {/* Map image */}
             <img
                 src={worldmapImg}
-                alt="World map"
+                alt="World map showing location in India"
                 className="w-full h-auto opacity-40 dark:opacity-25 dark:invert"
                 loading="lazy"
+                width="600"
+                height="300"
             />
 
             {/* ── India pointer: label + beam + ground halo ─────── */}
@@ -180,10 +182,11 @@ export default function ContactSection({ embedded = false }) {
                             <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6">
                                 {/* Full name */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Full name
                                     </label>
                                     <input
+                                        id="contact-name"
                                         type="text"
                                         name="name"
                                         value={form.name}
@@ -205,10 +208,11 @@ export default function ContactSection({ embedded = false }) {
 
                                 {/* Email */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label htmlFor="contact-email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Email Address
                                     </label>
                                     <input
+                                        id="contact-email"
                                         type="email"
                                         name="email"
                                         value={form.email}
@@ -230,10 +234,11 @@ export default function ContactSection({ embedded = false }) {
 
                                 {/* Company */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label htmlFor="contact-company" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Company
                                     </label>
                                     <input
+                                        id="contact-company"
                                         type="text"
                                         name="company"
                                         value={form.company}
@@ -254,10 +259,11 @@ export default function ContactSection({ embedded = false }) {
 
                                 {/* Message */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label htmlFor="contact-message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Message
                                     </label>
                                     <textarea
+                                        id="contact-message"
                                         name="message"
                                         value={form.message}
                                         onChange={handleChange}
