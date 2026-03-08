@@ -1,16 +1,22 @@
+import { lazy, Suspense } from "react";
 import Navbar from "./components/layout/Navbar";
-import TechLogoLoop from "./components/sections/TechLogoLoop";
-import AboutSection from "./components/sections/AboutSection";
-import ContactSection from "./components/sections/ContactSection";
-import ProjectsSection from "./components/sections/ProjectsSection";
-import Footer from "./components/layout/Footer";
 import CurvedLoopBandHero from "./sections/home/CurvedLoopBandHero";
 import GlassSection from "./components/layout/GlassSection";
-import ShuffleHeading from "./components/ui/ShuffleHeading";
 import ScrollReveal from "./components/ui/ScrollReveal";
+import ShuffleHeading from "./components/ui/ShuffleHeading";
 import SplitClock from "./components/ui/SplitClock";
 import CurvedLoopPrince from "./components/animation/CurvedLoopPrince";
 import AppBackground from "./theme/AppBackground";
+import SecurityShield from "./components/security/SecurityShield";
+import useDevToolsDetect from "./hooks/useDevToolsDetect";
+
+/* Lazy-load below-fold components for faster LCP */
+const AboutSection = lazy(() => import("./components/sections/AboutSection"));
+const TechLogoLoop = lazy(() => import("./components/sections/TechLogoLoop"));
+const ProjectsSection = lazy(() => import("./components/sections/ProjectsSection"));
+const ContactSection = lazy(() => import("./components/sections/ContactSection"));
+const Footer = lazy(() => import("./components/layout/Footer"));
+const CaughtYouModal = lazy(() => import("./components/ui/CaughtYouModal"));
 
 /* ─── Section placeholder inside glass cards ──────────────────── */
 function Section({ id, title, description }) {
@@ -32,7 +38,7 @@ function Section({ id, title, description }) {
 }
 
 /* ─── Scrolling text band at Home/About boundary ─────────────── */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 function ScrollingTextBand() {
   const ref = useRef(null);
@@ -69,18 +75,39 @@ function ScrollingTextBand() {
   );
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   App — Aurora glass layout
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   App — Aurora glass layout + Security Shield
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function App() {
+  const devToolsOpen = useDevToolsDetect();
+  const [modalOpen, setModalOpen] = useState(false);
+
+  /* Show modal when DevTools detected — stays until DevTools is closed */
+  useEffect(() => {
+    setModalOpen(devToolsOpen);
+  }, [devToolsOpen]);
+
+  /* Triggered by keyboard shortcuts (F12, Ctrl+Shift+I, etc.) */
+  const handleShortcutDetected = useCallback(() => {
+    setModalOpen(true);
+  }, []);
+
   return (
-    <>
+    <SecurityShield onDevToolsShortcut={handleShortcutDetected}>
       <AppBackground />
+
+      {/* Skip to main content — Accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-indigo-600 focus:text-white focus:rounded-lg"
+      >
+        Skip to main content
+      </a>
 
       <div className="relative z-0 min-h-screen">
         <Navbar />
 
-        <main className="pt-20 pb-12">
+        <main id="main-content" className="pt-20 pb-12">
           {/* ── Home + Clock + About zone ──────────────────────── */}
           <div className="relative">
             {/* Home hero */}
@@ -88,9 +115,11 @@ function App() {
 
             {/* About in glass */}
             <div className="mt-8">
-              <GlassSection id="about">
-                <AboutSection embedded />
-              </GlassSection>
+              <Suspense fallback={<div className="min-h-[40vh]" />}>
+                <GlassSection id="about">
+                  <AboutSection embedded />
+                </GlassSection>
+              </Suspense>
             </div>
 
             {/* Scrolling text band at boundary — BEHIND the clock */}
@@ -100,22 +129,36 @@ function App() {
             <SplitClock />
           </div>
 
-          {/* ── Remaining sections ─────────────────────────────── */}
-          <GlassSection id="skills" noPadding>
-            <TechLogoLoop embedded />
-          </GlassSection>
+          {/* ── Remaining sections (lazy loaded) ───────────────── */}
+          <Suspense fallback={<div className="min-h-[30vh]" />}>
+            <GlassSection id="skills" noPadding>
+              <TechLogoLoop embedded />
+            </GlassSection>
+          </Suspense>
 
-          <GlassSection id="projects">
-            <ProjectsSection embedded />
-          </GlassSection>
-          <GlassSection id="contact">
-            <ContactSection embedded />
-          </GlassSection>
+          <Suspense fallback={<div className="min-h-[30vh]" />}>
+            <GlassSection id="projects">
+              <ProjectsSection embedded />
+            </GlassSection>
+          </Suspense>
+
+          <Suspense fallback={<div className="min-h-[30vh]" />}>
+            <GlassSection id="contact">
+              <ContactSection embedded />
+            </GlassSection>
+          </Suspense>
         </main>
 
-        <Footer />
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
       </div>
-    </>
+
+      {/* 3D popup modal — non-dismissable */}
+      <Suspense fallback={null}>
+        <CaughtYouModal isOpen={modalOpen} />
+      </Suspense>
+    </SecurityShield>
   );
 }
 

@@ -102,8 +102,8 @@ export default function TechLogoLoop({ embedded = false }) {
                 }`}
         >
             {/* ── Heading area ─────────────────────────────────────── */}
-            <div className="mb-12 sm:mb-16 px-6 sm:px-10 lg:px-16">
-                <p className="text-xs font-bold uppercase tracking-[0.25em] text-indigo-500 dark:text-indigo-400 mb-4">
+            <div className="text-center mb-12 sm:mb-16 px-6">
+                <p className="text-center text-xs font-bold uppercase tracking-[0.25em] text-indigo-500 dark:text-indigo-400 mb-4">
                     My Skillset
                 </p>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">

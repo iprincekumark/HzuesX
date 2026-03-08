@@ -1,6 +1,7 @@
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
 import ScrollReveal from "../ui/ScrollReveal";
-import worldmapImg from "../../assets/worldmap.png";
+import worldmapImg from "../../assets/worldmap.webp";
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    ContactSection — Matching the reference design exactly
@@ -20,9 +21,11 @@ function WorldMap() {
             {/* Map image */}
             <img
                 src={worldmapImg}
-                alt="World map"
+                alt="World map showing location in India"
                 className="w-full h-auto opacity-40 dark:opacity-25 dark:invert"
                 loading="lazy"
+                width="600"
+                height="300"
             />
 
             {/* ── India pointer: label + beam + ground halo ─────── */}
@@ -106,17 +109,38 @@ export default function ContactSection({ embedded = false }) {
     const Tag = embedded ? "div" : "section";
     const [form, setForm] = useState({ name: "", email: "", company: "", message: "" });
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     const handleChange = (e) => {
         setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // For now just show submitted state
-        setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 3000);
-        setForm({ name: "", email: "", company: "", message: "" });
+        setLoading(true);
+        setError("");
+
+        try {
+            await emailjs.send(
+                import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+                {
+                    from_name: form.name,
+                    from_email: form.email,
+                    company: form.company || "Not specified",
+                    message: form.message,
+                },
+                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+            );
+            setSubmitted(true);
+            setForm({ name: "", email: "", company: "", message: "" });
+            setTimeout(() => setSubmitted(false), 4000);
+        } catch (err) {
+            setError("Failed to send message. Please try again or email directly.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -180,10 +204,11 @@ export default function ContactSection({ embedded = false }) {
                             <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6">
                                 {/* Full name */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Full name
                                     </label>
                                     <input
+                                        id="contact-name"
                                         type="text"
                                         name="name"
                                         value={form.name}
@@ -205,10 +230,11 @@ export default function ContactSection({ embedded = false }) {
 
                                 {/* Email */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label htmlFor="contact-email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Email Address
                                     </label>
                                     <input
+                                        id="contact-email"
                                         type="email"
                                         name="email"
                                         value={form.email}
@@ -230,10 +256,11 @@ export default function ContactSection({ embedded = false }) {
 
                                 {/* Company */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label htmlFor="contact-company" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Company
                                     </label>
                                     <input
+                                        id="contact-company"
                                         type="text"
                                         name="company"
                                         value={form.company}
@@ -254,10 +281,11 @@ export default function ContactSection({ embedded = false }) {
 
                                 {/* Message */}
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    <label htmlFor="contact-message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Message
                                     </label>
                                     <textarea
+                                        id="contact-message"
                                         name="message"
                                         value={form.message}
                                         onChange={handleChange}
@@ -277,17 +305,34 @@ export default function ContactSection({ embedded = false }) {
                                     />
                                 </div>
 
+                                {/* Error message */}
+                                {error && (
+                                    <p className="text-red-500 dark:text-red-400 text-sm text-center">
+                                        {error}
+                                    </p>
+                                )}
+
                                 {/* Submit */}
                                 <button
                                     type="submit"
-                                    className="px-6 py-2.5 rounded-lg text-sm font-medium
+                                    disabled={loading}
+                                    className={`px-6 py-2.5 rounded-lg text-sm font-medium
                                         bg-gray-900 dark:bg-gray-100
                                         text-white dark:text-gray-900
                                         hover:bg-gray-800 dark:hover:bg-gray-200
                                         active:scale-[0.98]
-                                        transition-all duration-200"
+                                        transition-all duration-200
+                                        disabled:opacity-60 disabled:cursor-not-allowed`}
                                 >
-                                    {submitted ? "Sent ✓" : "Submit"}
+                                    {loading ? (
+                                        <span className="flex items-center gap-2">
+                                            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                            </svg>
+                                            Sending...
+                                        </span>
+                                    ) : submitted ? "Sent ✓" : "Submit"}
                                 </button>
                             </form>
                         </div>
