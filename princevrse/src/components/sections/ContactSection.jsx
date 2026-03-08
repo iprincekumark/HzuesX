@@ -1,4 +1,5 @@
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
 import ScrollReveal from "../ui/ScrollReveal";
 import worldmapImg from "../../assets/worldmap.webp";
 
@@ -108,17 +109,38 @@ export default function ContactSection({ embedded = false }) {
     const Tag = embedded ? "div" : "section";
     const [form, setForm] = useState({ name: "", email: "", company: "", message: "" });
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     const handleChange = (e) => {
         setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // For now just show submitted state
-        setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 3000);
-        setForm({ name: "", email: "", company: "", message: "" });
+        setLoading(true);
+        setError("");
+
+        try {
+            await emailjs.send(
+                import.meta.env.VITE_EMAILJS_SERVICE_ID,
+                import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+                {
+                    from_name: form.name,
+                    from_email: form.email,
+                    company: form.company || "Not specified",
+                    message: form.message,
+                },
+                import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+            );
+            setSubmitted(true);
+            setForm({ name: "", email: "", company: "", message: "" });
+            setTimeout(() => setSubmitted(false), 4000);
+        } catch (err) {
+            setError("Failed to send message. Please try again or email directly.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -283,17 +305,34 @@ export default function ContactSection({ embedded = false }) {
                                     />
                                 </div>
 
+                                {/* Error message */}
+                                {error && (
+                                    <p className="text-red-500 dark:text-red-400 text-sm text-center">
+                                        {error}
+                                    </p>
+                                )}
+
                                 {/* Submit */}
                                 <button
                                     type="submit"
-                                    className="px-6 py-2.5 rounded-lg text-sm font-medium
+                                    disabled={loading}
+                                    className={`px-6 py-2.5 rounded-lg text-sm font-medium
                                         bg-gray-900 dark:bg-gray-100
                                         text-white dark:text-gray-900
                                         hover:bg-gray-800 dark:hover:bg-gray-200
                                         active:scale-[0.98]
-                                        transition-all duration-200"
+                                        transition-all duration-200
+                                        disabled:opacity-60 disabled:cursor-not-allowed`}
                                 >
-                                    {submitted ? "Sent ✓" : "Submit"}
+                                    {loading ? (
+                                        <span className="flex items-center gap-2">
+                                            <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                            </svg>
+                                            Sending...
+                                        </span>
+                                    ) : submitted ? "Sent ✓" : "Submit"}
                                 </button>
                             </form>
                         </div>
